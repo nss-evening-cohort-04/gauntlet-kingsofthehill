@@ -12,7 +12,7 @@
 <body>
 
   <article id="game-container">
-
+    <!-- to get player name -->
     <section id="player-setup" class="card card--name">
       <div class="card__prompt">
         <div>RECORD YOUR NAME, ADVENTURER</div>
@@ -30,7 +30,7 @@
         </a>
       </div>
     </section>
-
+    <!-- to set player type -->
     <section id="class-select" class="card card--class">
       <div class="card__prompt">
         <div>CHOOSE YOUR PATH</div>
@@ -64,7 +64,7 @@
             <div class="card__button">
               <a class="class__link btn btn--big btn--blue" href="#">
                 <span class="btn__prompt">></span>
-                <span class="btn__text">berserker</span>
+                <span class="btn__text">Berserker</span>
               </a>
             </div>      
             
@@ -129,7 +129,6 @@
           </div>
         </div>
       </div>
-
       <div class="card__button">
         <a class="card__link btn btn--big btn--orange" 
            href="#" 
@@ -140,6 +139,7 @@
       </div>
     </section>
 
+    <!-- to choose weapon -->
     <section id="weapon-select" class="card card--weapon">
       <div class="card__prompt">
         <div>choose your weapon</div>
@@ -153,6 +153,37 @@
         </div>
       </div>
 
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-4">
+            <div class="card__button">
+              <a class="class__link btn btn--big btn--blue" href="#">
+                <span class="btn__prompt">></span>
+                <span class="btn__text">Dagger</span>
+              </a>
+            </div>      
+          </div>      
+
+          <div class="col-sm-4">
+            <div class="card__button">
+              <a class="class__link btn btn--big btn--blue" href="#">
+                <span class="btn__prompt">></span>
+                <span class="btn__text">BroadSword</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="col-sm-4">
+            <div class="card__button">
+              <a class="class__link btn btn--big btn--blue" href="#">
+                <span class="btn__prompt">></span>
+                <span class="btn__text">WarAxe</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="card__button">
         <a class="card__link btn btn--big btn--orange" 
            href="#" 
@@ -163,7 +194,57 @@
       </div>
     </section>
 
-    <section id="battleground" class="card card--battleground"></section>
+    <section id="battleground" class="card card--battleground">
+      <div class="card__prompt">
+        <div>Battleground</div>
+        <div>
+          <a class="card__back btn btn--small" 
+             href="#"
+             previous="card--class">
+            <span class="btn__prompt">&lt;</span>
+            <span class="btn__text">Back</span>
+          </a>          
+        </div>
+      </div>
+
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-4">
+            <div class="card__button">
+              <a class="class__link btn btn--big btn--blue" href="#">
+                <span class="btn__prompt">></span>
+                <span class="btn__text">Hero</span>
+              </a>
+            </div>      
+          </div>
+          <div class="col-sm-4">
+            <div class="card__button">
+              <a class="class__link btn btn--big btn--blue" href="#">
+                <span class="btn__prompt">></span>
+                <span class="btn__text">Round 1</span>
+              </a>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="card__button">
+              <a class="class__link btn btn--big btn--blue" href="#">
+                <span class="btn__prompt">></span>
+                <span class="btn__text">Villain</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card__button">
+        <a class="card_fight card__link btn btn--big btn--orange" 
+           href="#" 
+           next="">
+          <span class="btn__prompt">></span>
+          <span class="btn__text">Attack</span>
+        </a>
+      </div>
+    </section>
 
   </article>
 
