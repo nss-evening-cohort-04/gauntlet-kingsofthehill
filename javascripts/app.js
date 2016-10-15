@@ -24,6 +24,8 @@ $(document).ready(function() {
   var weaponName = "";
   var hero = "";
   var villain = "";
+  var villainLife;
+  var heroLife;
   /*
     Show the initial view that accepts player name
    */
@@ -53,11 +55,13 @@ $(document).ready(function() {
         hero.setWeapon(new coldWeapon[weaponName]());
         hero.setSpell(new Gauntlet.SpellBook.Sphere());
         console.log(hero.toString(), hero.totalDamage, hero.strength);
+        heroLife = hero.health;
 
         villain = new Gauntlet.Combatants.Orc();
         villain.generateClass();
         villain.setWeapon(new coldWeapon.BroadSword());
         console.log(villain.toString(),villain.totalDamage, villain.health);
+        villainLife = villain.health;
         break;
     }
 
@@ -80,8 +84,9 @@ $(document).ready(function() {
   $(".card__button").click(function(e){
     var $target = $(this);
     if ($("#class-select").css("display") === "block"){
-      playerType = $($target).find(".btn__text").text();
-      if (playerType === "surprise me"){
+      playerType = ($($target).find(".btn__text").text()).toLowerCase();
+      playerType = playerType.charAt(0).toUpperCase() + playerType.slice(1);
+      if (playerType.toLowerCase() === "surprise me"){
         playerType = null;
       }
     } else if ($("#weapon-select").css("display") === "block"){
@@ -91,18 +96,45 @@ $(document).ready(function() {
 
   // attack button action (hero vs villain)
   $(".card_fight").click(function(e){
+    // on page load...
     hero.attack(villain);
     console.log("villain", villain.health);
-    if(villain.health <= 0){
-      alert("Hero wins!");
-      return;
-    }
+    // if(villain.health <= 0){
+    //   alert("Hero wins!");
+    //   return;
+    // }
     villain.attack(hero);
     console.log("hero", hero.health);
+
+    moveProgressBar(hero.health, heroLife, "#heroWrap", "#heroProgress");
+    moveProgressBar(villain.health, villainLife, "#villainWrap", "#villainProgress");
+    // on browser resize...
+    $(window).resize(function() {
+      moveProgressBar(villain.healthheroLife, "#heroWrap", "#heroProgress");
+      moveProgressBar(villain.health, villainLife, "#villainWrap", "#villainProgress");
+    });
+
+    // SIGNATURE PROGRESS
+    function moveProgressBar(updatedLife, fullLife, wrap, progress) {
+      console.log("moveProgressBar");
+        var getPercent = updatedLife / fullLife;
+        var getProgressWrapWidth = $(wrap).width();
+        var progressTotal = getPercent * getProgressWrapWidth;
+        var animationLength = 500;
+        
+        // on page load, animate percentage bar to data percentage length
+        // .stop() used to prevent animation queueing
+        $(progress).stop().animate({
+            left: progressTotal
+        }, animationLength);
+    }
+    if(villain.health <= 0){
+      alert("Hero wins!");
+    return;
+    }
     if (hero.health <= 0){
       alert("Hero lost!");
       return;
     }
   })
-
 });
