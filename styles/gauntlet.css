@@ -57,6 +57,10 @@ body {
   min-width: 260px;
 }
 
+.btn:focus {
+  background-color: grey;
+}
+
 .btn--orange {
   border-color: #FF4136;
   color: white;
