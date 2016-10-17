@@ -43,7 +43,7 @@ Gauntlet.Combatants.Player = function(name) {
 
 Gauntlet.Combatants.Player.prototype.setWeapon = function(newWeapon) {
   this.weapon = newWeapon;
-  this.totalDamage = this.weapon.damage * (1 + this.strength / 200);
+  this.totalDamage = Math.round(this.weapon.damage * (1 + this.strength / 200));
 }
 
 Gauntlet.Combatants.Player.prototype.setSpell = function(newSpell) {
@@ -92,6 +92,7 @@ Gauntlet.Combatants.Human = function(name) {
 
   this.allowedClasses = ["Warrior", "Berserker", "Valkyrie", "Monk"];
 };
+
 Gauntlet.Combatants.Human.prototype = new Gauntlet.Combatants.Player();
 
 

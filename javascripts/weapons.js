@@ -17,17 +17,17 @@ coldWeapon.Dagger = function() {
 };
 coldWeapon.Dagger.prototype = new Weapon();
 
-coldWeapon.BroadSword = function() {
+coldWeapon.Broadsword = function() {
   this.name = "broad sword";
   this.damage = 14;
   this.hands = 2;
 };
-coldWeapon.BroadSword.prototype = new Weapon();
+coldWeapon.Broadsword.prototype = new Weapon();
 
-coldWeapon.WarAxe = function() {
+coldWeapon.Waraxe = function() {
   this.name = "war axe";
   this.damage = 18;
   this.hands = 2;
 };
-coldWeapon.WarAxe.prototype = new Weapon();
+coldWeapon.Waraxe.prototype = new Weapon();
 

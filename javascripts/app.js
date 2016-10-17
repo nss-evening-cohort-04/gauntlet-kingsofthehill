@@ -1,33 +1,22 @@
-/*
-  Test code to generate a human player and an orc player
- */
-// var warrior = new Gauntlet.Combatants.Human();
-// warrior.setWeapon(new WarAxe());
-// warrior.generateClass();  // This will be used for "Surprise me" option
-// console.log(warrior.toString());
-
-// var orc = new Gauntlet.Combatants.Orc();
-// orc.generateClass();
-// orc.setWeapon(new BroadSword());
-// console.log(orc.toString());
-
-/*
-  Test code to generate a spell
- */
-// var spell = new Gauntlet.SpellBook.Sphere();
-// console.log("spell: ", spell.toString());
-
-
+// handle all events here
 $(document).ready(function() {
   var playerName = "";
   var playerType = "";
   var weaponName = "";
   var hero = "";
   var villain = "";
+  var villainLife;
+  var heroLife;
+  var nRound;
+  var roundBtn = $(".round");
+  var livereport = $(".livereport");
+  var fighthBtn = $(".card_fight");
+ 
   /*
     Show the initial view that accepts player name
    */
   $("#player-setup").show();
+  $(".caption").hide();
 
   /*
     When any button with card__link class is clicked,
@@ -48,22 +37,42 @@ $(document).ready(function() {
         break;
       case "card--battleground":
         moveAlong = (weaponName !== "");
-        hero = new Gauntlet.Combatants.Human(playerName);
-        hero.generateClass(playerType);  // This will be used for "Surprise me" option
-        hero.setWeapon(new coldWeapon[weaponName]());
-        hero.setSpell(new Gauntlet.SpellBook.Sphere());
-        console.log(hero.toString(), hero.totalDamage, hero.strength);
-
-        villain = new Gauntlet.Combatants.Orc();
-        villain.generateClass();
-        villain.setWeapon(new coldWeapon.BroadSword());
-        console.log(villain.toString(),villain.totalDamage, villain.health);
         break;
     }
 
     if (moveAlong) {
       $(".card").hide();
       $("." + nextCard).show();
+      // on page load...
+      if(nextCard === "card--battleground"){
+        // to pick random avatar for hero
+        let heroImgs = ["bill.png", "boomhauer.png", "dale.png"];
+        let randomNum1 = Math.round(Math.random() * (heroImgs.length - 1));
+        let randomNum2 = Math.round(Math.random() * (heroImgs.length - 1));
+        let randomImg1 = heroImgs[randomNum1];
+        let randomImg2 = heroImgs[randomNum2];
+        playerType = playerType.charAt(0).toUpperCase() + playerType.slice(1);
+        if (playerType.toLowerCase() === "surprise me"){
+          playerType = null;
+        }
+        weaponName = weaponName.charAt(0).toUpperCase() + weaponName.slice(1).toLowerCase();
+        hero = new Gauntlet.Combatants.Human(playerName);
+        hero.generateClass(playerType);
+        hero.setWeapon(new coldWeapon[weaponName]());
+        hero.setSpell(new Gauntlet.SpellBook.Sphere());
+        $(".hero-profile").html(hero.toString()).after(`<div class="avatar"><img src="img/${randomImg1}"></div>`);
+        // $(".hero-profile").html(hero.toString());
+        heroLife = hero.health;
+
+        villain = new Gauntlet.Combatants.Orc();
+        villain.generateClass();
+        villain.setWeapon(new coldWeapon.Broadsword());
+        villain.setSpell(new Gauntlet.SpellBook.Sphere());
+        $(".villain-profile").html(villain.toString()).after(`<div class="avatar"><img src="img/${randomImg2}"></div>`);
+        villainLife = villain.health;
+
+        setGame();
+      }
     }
   });
 
@@ -71,38 +80,109 @@ $(document).ready(function() {
     When the back button clicked, move back a view
    */
   $(".card__back").click(function(e) {
+    hero = "";
+    villain = "";
+    $(".avatar").remove();
     var previousCard = $(this).attr("previous");
     $(".card").hide();
     $("." + previousCard).show();
   });
 
+  // when mouse over, show detail
+  $(".btn--blue").hover(
+    function(){
+      $(this).next().show();
+    },
+    function(){
+      $(this).next().hide();
+    }
+  );
+  
   // when role button clicked, store the button value
   $(".card__button").click(function(e){
     var $target = $(this);
     if ($("#class-select").css("display") === "block"){
       playerType = $($target).find(".btn__text").text();
-      if (playerType === "surprise me"){
-        playerType = null;
-      }
     } else if ($("#weapon-select").css("display") === "block"){
       weaponName = $($target).find(".btn__text").text();
     }
   })
 
   // attack button action (hero vs villain)
-  $(".card_fight").click(function(e){
+  $(fighthBtn).click(function(){
+    let btnText = $(this).find(".btn__text").text().toLowerCase();
+    if(btnText === "Attack".toLowerCase()){
+      fight();
+    } else if(btnText === "play again".toLowerCase()){
+      playAgain();
+    }
+    $(this).css("background-color", "green");
+  });
+  
+  function fight(){
     hero.attack(villain);
-    console.log("villain", villain.health);
+    $(livereport).html(`Hero attacked villain<br>caused ${hero.totalDamage} damage`);
+    moveProgressBar(villain.health, villainLife, "#villainWrap", "#villainProgress");
     if(villain.health <= 0){
-      alert("Hero wins!");
+      $(livereport).html(`<div class="livereport">Hero wins!</div>`);
+      endGame();
       return;
     }
-    villain.attack(hero);
-    console.log("hero", hero.health);
-    if (hero.health <= 0){
-      alert("Hero lost!");
-      return;
-    }
-  })
 
-});
+    setTimeout(function(){
+      villain.attack(hero);
+      $(livereport).html(`Villain attacked hero<br>caused ${villain.totalDamage} damage`);
+      moveProgressBar(hero.health, heroLife, "#heroWrap", "#heroProgress");
+      if (hero.health <= 0){
+        $(livereport).html(`<div class="livereport">Hero lost!</div>`);
+        endGame();
+        return;
+      }
+      setTimeout(function(){
+        $(roundBtn).html(`round ${++nRound}`);
+        $(livereport).html("");
+      }, 1000);
+    }, 1000);
+
+  } // end of fight function
+
+  function playAgain(){
+    hero.health = heroLife;
+    villain.health = villainLife;
+    setGame();
+    $(fighthBtn).find(".btn__text").text("Attack"); 
+  } // end of playAgain function
+
+  function endGame(){
+    $(fighthBtn).css("background-color", "green").find(".btn__text").text("play again");
+  } // end of endGame function
+
+  function setGame(){
+    nRound = 1;
+    $(roundBtn).html(`round ${nRound}`);
+    $(livereport).html("");
+    moveProgressBar(villain.health, villainLife, "#villainWrap", "#villainProgress");
+    moveProgressBar(hero.health, heroLife, "#heroWrap", "#heroProgress");
+    $(fighthBtn).css("background-color", "green");
+  } // endof of resetRoundBtn function
+
+
+  // SIGNATURE PROGRESS
+  function moveProgressBar(updatedLife, fullLife, wrap, progress) {
+    var getPercent = updatedLife / fullLife;
+    var getProgressWrapWidth = $(wrap).width();
+    var progressTotal = Math.max(getPercent, 0) * getProgressWrapWidth;
+    var animationLength = 0;
+    // on page load, animate percentage bar to data percentage length
+    // .stop() used to prevent animation queueing
+    $(progress).stop().animate({
+        left: progressTotal
+    }, animationLength);
+  } // end of moveProgressBar function
+  // on browser resize progress bar
+  $(window).resize(function() {
+    moveProgressBar(hero.health, heroLife, "#heroWrap", "#heroProgress");
+    moveProgressBar(villain.health, villainLife, "#villainWrap", "#villainProgress");
+  });
+
+}); // end of document ready function
