@@ -119,38 +119,38 @@ $(document).ready(function() {
     $(this).css("background-color", "green");
   });
   
-  function fight(){
+function fight(){
 
     $("#hero_static").hide();
     $("#hero_img").addClass("boom");
     hero.attack(villain);
     $(livereport).html(`Hero attacked villain<br>caused ${hero.totalDamage} damage`);
     moveProgressBar(villain.health, villainLife, "#villainWrap", "#villainProgress");
-    if(villain.health <= 0){
-      $(livereport).html(`<div class="livereport">Hero Wins!<img src="img/winner_logo.png"></div>`);
-      endGame();
-      return;
-    }
-
-    setTimeout(function(){
-      villain.attack(hero);
-      $(livereport).html(`Villain attacked hero<br>caused ${villain.totalDamage} damage`);
-      moveProgressBar(hero.health, heroLife, "#heroWrap", "#heroProgress");
-      if (hero.health <= 0){
-        $(livereport).html(`<div class="livereport">Hero lost!</div>`);
-        endGame();
-        return;
-      }
-      setTimeout(function(){
-        $(roundBtn).html(`round ${++nRound}`);
-        $(livereport).html("");
-      }, 1000);
-    }, 1000);
-
     setTimeout(function(){
       $("#hero_static").show();
       $("#hero_img").removeClass("boom");
-    }, 1000);
+      if(villain.health <= 0){
+        $(livereport).html(`<div class="livereport">Hero Wins!<img src="img/winner_logo.png"></div>`);
+        endGame();
+        return;
+      }
+
+      setTimeout(function(){
+        villain.attack(hero);
+        $(livereport).html(`Villain attacked hero<br>caused ${villain.totalDamage} damage`);
+        moveProgressBar(hero.health, heroLife, "#heroWrap", "#heroProgress");
+        if (hero.health <= 0){
+          $(livereport).html(`<div class="livereport">Hero lost!</div>`);
+          endGame();
+          return;
+        }
+        setTimeout(function(){
+          $(roundBtn).html(`round ${++nRound}`);
+          $(livereport).html("");
+        }, 1000);
+      }, 1000);
+    }, 1100);
+
   } // end of fight function
 
   function playAgain(){
