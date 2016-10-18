@@ -139,3 +139,19 @@ body {
   font-size: smaller;
 }
 
+/*@keyframes animation*/
+.boom {
+  /*margin: 200px 0 0 20px;*/
+  margin-left: 115px;
+  width: 194px;
+  height: auto;
+    background-image: url(boom_hammer-5_steps.png);
+    
+    -webkit-animation: play 1.0s steps(5);
+}
+
+@-webkit-keyframes play {
+   from { background-position: 0 0; }
+     to { background-position: -970px 0; }
+}
+

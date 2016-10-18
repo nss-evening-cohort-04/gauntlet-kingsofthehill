@@ -60,7 +60,7 @@ $(document).ready(function() {
         hero.generateClass(playerType);
         hero.setWeapon(new coldWeapon[weaponName]());
         hero.setSpell(new Gauntlet.SpellBook.Sphere());
-        $(".hero-profile").html(hero.toString()).after(`<div class="avatar"><img src="img/${randomImg1}"></div>`);
+        $(".hero-profile").html(hero.toString()).after(`<div id="hero_img" class="avatar" style="height:385px"><img id="hero_static" src="img/boom_static.png"></div>`);
         // $(".hero-profile").html(hero.toString());
         heroLife = hero.health;
 
@@ -120,6 +120,9 @@ $(document).ready(function() {
   });
   
   function fight(){
+
+    $("#hero_static").hide();
+    $("#hero_img").addClass("boom");
     hero.attack(villain);
     $(livereport).html(`Hero attacked villain<br>caused ${hero.totalDamage} damage`);
     moveProgressBar(villain.health, villainLife, "#villainWrap", "#villainProgress");
@@ -144,6 +147,10 @@ $(document).ready(function() {
       }, 1000);
     }, 1000);
 
+    setTimeout(function(){
+      $("#hero_static").show();
+      $("#hero_img").removeClass("boom");
+    }, 1000);
   } // end of fight function
 
   function playAgain(){
