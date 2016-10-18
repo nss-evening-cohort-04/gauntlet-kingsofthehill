@@ -143,15 +143,15 @@ body {
 .boom {
   /*margin: 200px 0 0 20px;*/
   margin-left: 115px;
-  width: 194px;
+  width: 205px;
   height: auto;
-    background-image: url(boom_hammer-5_steps.png);
+    background-image: url(boom_hammer-9_steps.png);
     
-    -webkit-animation: play 1.0s steps(5);
+    -webkit-animation: play .2s steps(9);
 }
 
 @-webkit-keyframes play {
    from { background-position: 0 0; }
-     to { background-position: -970px 0; }
+     to { background-position: -1845px 0; }
 }
 
