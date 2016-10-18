@@ -149,7 +149,7 @@ $(document).ready(function() {
           $(livereport).html("");
         }, 1000);
       }, 1000);
-    }, 1000);
+    }, 1100);
 
   } // end of fight function
 
