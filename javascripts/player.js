@@ -12,6 +12,7 @@ Gauntlet.Combatants.Player = function(name) {
   this.species = null;
   this.class = null;
   this.weapon = null;
+  this.spell = null;
 
   this.playerName = name || "unknown adventurer";
   this.health = Math.floor(Math.random() * 40 + 50);
@@ -20,6 +21,7 @@ Gauntlet.Combatants.Player = function(name) {
   this.skinColors = [this.skinColor];
   this.strength = 90;
   this.intelligence = 90;
+  this.totalDamage = 1;
 
   this.toString = function() {
     var output = [this.playerName,
@@ -32,8 +34,7 @@ Gauntlet.Combatants.Player = function(name) {
       " with ",
       this.health,
       " health. ",
-      (this.class.magical) ? "Able to cast " : " Wielding a ",
-      this.weapon.toString(),
+      (this.class.magical) ? ("Able to cast " + this.spell.toString()) : (" Wielding a " + this.weapon.toString()),
       "!"
     ].join("");
     return output;
@@ -42,9 +43,21 @@ Gauntlet.Combatants.Player = function(name) {
 
 Gauntlet.Combatants.Player.prototype.setWeapon = function(newWeapon) {
   this.weapon = newWeapon;
+  this.totalDamage = Math.round(this.weapon.damage * (1 + this.strength / 200));
 }
 
-Gauntlet.Combatants.Player.prototype.generateClass = function() {
+Gauntlet.Combatants.Player.prototype.setSpell = function(newSpell) {
+  if (this.class.magical === true){
+    this.spell = newSpell;
+    this.totalDamage += this.spell.damage;
+  }
+}
+
+Gauntlet.Combatants.Player.prototype.attack = function(target) {
+  target.health -= this.totalDamage;
+}
+
+Gauntlet.Combatants.Player.prototype.generateClass = function(playerType) {
   // Get a random index from the allowed classes array
   var random = Math.round(Math.random() * (this.allowedClasses.length - 1));
 
@@ -52,10 +65,13 @@ Gauntlet.Combatants.Player.prototype.generateClass = function() {
   var randomClass = this.allowedClasses[random];
 
   // Composes the corresponding player class into the player object
-  this.class = new Gauntlet.GuildHall[randomClass]();
+  this.class = new Gauntlet.GuildHall[playerType || randomClass]();
 
   // Add the health bonus
   this.health += this.class.healthBonus;
+
+  // Add the strength bonus
+  this.strength += this.class.strengthBonus;
   return this.class;
 };
 
@@ -63,7 +79,8 @@ Gauntlet.Combatants.Player.prototype.generateClass = function() {
   Define the base properties for a human in a 
   constructor function.
  */
-Gauntlet.Combatants.Human = function() {
+Gauntlet.Combatants.Human = function(name) {
+  Gauntlet.Combatants.Player.call(this, name);
   var randomSkin;
 
   this.species = "Human";
@@ -75,6 +92,7 @@ Gauntlet.Combatants.Human = function() {
 
   this.allowedClasses = ["Warrior", "Berserker", "Valkyrie", "Monk"];
 };
+
 Gauntlet.Combatants.Human.prototype = new Gauntlet.Combatants.Player();
 
 

@@ -8,24 +8,26 @@ var Weapon = function() {
   }
 };
 
-var Dagger = function() {
+var coldWeapon = {};
+
+coldWeapon.Dagger = function() {
   this.name = "dagger";
   this.damage = 4;
   this.hands = 1;
 };
-Dagger.prototype = new Weapon();
+coldWeapon.Dagger.prototype = new Weapon();
 
-var BroadSword = function() {
+coldWeapon.Broadsword = function() {
   this.name = "broad sword";
   this.damage = 14;
   this.hands = 2;
 };
-BroadSword.prototype = new Weapon();
+coldWeapon.Broadsword.prototype = new Weapon();
 
-var WarAxe = function() {
+coldWeapon.Waraxe = function() {
   this.name = "war axe";
   this.damage = 18;
   this.hands = 2;
 };
-WarAxe.prototype = new Weapon();
+coldWeapon.Waraxe.prototype = new Weapon();
 

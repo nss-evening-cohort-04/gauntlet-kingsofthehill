@@ -3,6 +3,9 @@ body {
   margin: 0;
   padding: 10px;
   font-size: 3em;
+  background-image: url("/img/koh_battleground.png");
+  background-repeat: no-repeat;
+  background-size: 100%;
 }
 
 .field {
@@ -103,3 +106,52 @@ body {
   padding: 0 50px 0 20px;
   border-radius: 0 5px 5px 0;
 }
+
+.btn:focus{
+  background-color: grey;
+}
+
+.progress {
+  width: 100%;
+  height: 50px;
+}
+
+.progress-wrap {
+  background: red;
+  /*background: #f80;*/
+  margin: 20px 0;
+  overflow: hidden;
+  position: relative;
+}
+.progress-wrap .progress-bar {
+  background: grey;
+  /*background: #ddd;*/
+  left: 0;
+  position: absolute;
+  top: 0;
+}
+
+.caption,
+.livereport {
+  border: 1px solid white;
+  background-color: black;
+  color: gold;
+  font-size: smaller;
+}
+
+/*@keyframes animation*/
+.boom {
+  /*margin: 200px 0 0 20px;*/
+  margin-left: 115px;
+  width: 194px;
+  height: auto;
+    background-image: url(boom_hammer-5_steps.png);
+    
+    -webkit-animation: play 1.0s steps(5);
+}
+
+@-webkit-keyframes play {
+   from { background-position: 0 0; }
+     to { background-position: -970px 0; }
+}
+
