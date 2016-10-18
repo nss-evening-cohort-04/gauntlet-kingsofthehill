@@ -127,7 +127,7 @@ $(document).ready(function() {
     $(livereport).html(`Hero attacked villain<br>caused ${hero.totalDamage} damage`);
     moveProgressBar(villain.health, villainLife, "#villainWrap", "#villainProgress");
     if(villain.health <= 0){
-      $(livereport).html(`<div class="livereport">Hero wins!</div>`);
+      $(livereport).html(`<div class="livereport">Hero Wins!<img src="img/winner_logo.png"></div>`);
       endGame();
       return;
     }
